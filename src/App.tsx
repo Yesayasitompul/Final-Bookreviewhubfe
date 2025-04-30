@@ -9,7 +9,9 @@ import BaseLayout from "./layouts/BaseLayout";
 import RootLayout from "./layouts/RootLayout";
 import Home from "./pages/Home";
 import Login from "./pages/Login";
-import Post from "./pages/Post";
+import Books from "./pages/Books";
+import Category from "./pages/Category";
+import BookReviewSystem from "./pages/Review";
 import Register from "./pages/Register";
 import PrivateRoute from "./utils/PrivateRoute";
 import PublicRoute from "./utils/PublicRoute";
@@ -48,10 +50,26 @@ function App() {
             }
           />
           <Route
-            path="posts"
+            path="books"
             element={
               <PrivateRoute>
-                <Post />
+                <Books />
+              </PrivateRoute>
+            }
+          />
+          <Route
+            path="categories"
+            element={
+              <PrivateRoute>
+                <Category />
+              </PrivateRoute>
+            }
+          />
+          <Route
+            path="review"
+            element={
+              <PrivateRoute>
+                <BookReviewSystem />
               </PrivateRoute>
             }
           />
