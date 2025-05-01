@@ -1,4 +1,4 @@
-// Books.tsx - Main component
+// Books.tsx - Improved layout component
 import { useQuery } from "@tanstack/react-query";
 import { useState } from "react";
 import { useAuth } from "../utils/AuthProvider";
@@ -6,7 +6,7 @@ import axios from "../utils/AxiosInstance";
 import BookList from "../components/BookList";
 import BookForm from "../components/BookForm";
 import BookDetail from "./BookDetail";
-import { PlusOutlined } from "@ant-design/icons";
+import { PlusOutlined, BookOutlined, LoadingOutlined, ReadOutlined } from "@ant-design/icons";
 
 export type BookType = {
   id: number;
@@ -46,12 +46,21 @@ const Books = () => {
   const [isFormOpen, setIsFormOpen] = useState(false);
   const [isEditMode, setIsEditMode] = useState(false);
 
-  const { data: bookData, refetch: refetchBooks } = useQuery({
+  const { 
+    data: bookData, 
+    refetch: refetchBooks,
+    isLoading: isLoadingBooks,
+    isError: isErrorBooks 
+  } = useQuery({
     queryKey: ["bookList", currentPage],
     queryFn: () => fetchBookList(getToken(), currentPage)
   });
 
-  const { data: categoryData } = useQuery({
+  const { 
+    data: categoryData,
+    isLoading: isLoadingCategories,
+    isError: isErrorCategories 
+  } = useQuery({
     queryKey: ["categories"],
     queryFn: () => fetchCategories(getToken())
   });
@@ -95,30 +104,78 @@ const Books = () => {
     setCurrentPage(page);
   };
 
-  return (
-    <div className="p-4 max-w-6xl mx-auto">
-      <div className="flex justify-between items-center mb-4">
-        <h1 className="text-xl font-semibold text-gray-700 dark:text-gray-200">
-          My Books Collection
-        </h1>
-        <button
-          onClick={handleAddNewClick}
-          className="bg-blue-500 hover:bg-blue-600 text-white px-3 py-1.5 rounded flex items-center gap-1 text-sm transition-colors duration-200"
-        >
-          <PlusOutlined /> Add Book
-        </button>
-      </div>
+  const isLoading = isLoadingBooks || isLoadingCategories;
+  const isError = isErrorBooks || isErrorCategories;
 
-      {/* Book List Section */}
-      {bookData && (
-        <BookList
-          books={bookData.data}
-          onEdit={handleEditClick}
-          onView={handleViewClick}
-          onPageChange={handlePageChange}
-          currentPage={currentPage}
-        />
-      )}
+  return (
+    <div className="bg-gray-50 dark:bg-gray-900 min-h-screen p-6">
+      <div className="max-w-6xl mx-auto bg-white dark:bg-gray-800 rounded-lg shadow-md overflow-hidden">
+        {/* Header Section */}
+        <div className="bg-gradient-to-r from-green-500 to-teal-600 p-6">
+          <div className="flex justify-between items-center">
+            <div className="flex items-center space-x-3">
+              <ReadOutlined className="text-white text-2xl" />
+              <h1 className="text-2xl font-bold text-white">
+                My Books Collection
+              </h1>
+            </div>
+            <button
+              onClick={handleAddNewClick}
+              className="bg-white text-green-600 hover:bg-green-50 px-4 py-2 rounded-md font-medium flex items-center gap-2 transition-colors duration-200 shadow-sm"
+              disabled={isLoading}
+            >
+              <PlusOutlined /> Add Book
+            </button>
+          </div>
+        </div>
+
+        {/* Content Section */}
+        <div className="p-6">
+          {/* Loading State */}
+          {isLoading && (
+            <div className="flex justify-center items-center py-12">
+              <LoadingOutlined className="text-green-500 text-3xl" />
+              <span className="ml-2 text-gray-600 dark:text-gray-300 font-medium">Loading books collection...</span>
+            </div>
+          )}
+
+          {/* Error State */}
+          {isError && (
+            <div className="bg-red-50 dark:bg-red-900/20 text-red-600 dark:text-red-400 p-4 rounded-md mb-4">
+              <p>Failed to load books or categories. Please try again later.</p>
+            </div>
+          )}
+
+          {/* Empty State */}
+          {bookData?.data.length === 0 && !isLoading && (
+            <div className="text-center py-12">
+              <BookOutlined className="text-gray-400 text-4xl mb-3" />
+              <h3 className="text-xl text-gray-600 dark:text-gray-300 font-medium mb-2">Your book collection is empty</h3>
+              <p className="text-gray-500 dark:text-gray-400 mb-6">Start by adding your first book</p>
+              <button
+                onClick={handleAddNewClick}
+                className="bg-green-500 hover:bg-green-600 text-white px-5 py-2 rounded-md font-medium inline-flex items-center gap-2"
+                disabled={isLoadingCategories}
+              >
+                <PlusOutlined /> Add Your First Book
+              </button>
+            </div>
+          )}
+
+          {/* Book List */}
+          {bookData && bookData.data.length > 0 && (
+            <div className="bg-white dark:bg-gray-800 rounded-md">
+              <BookList
+                books={bookData.data}
+                onEdit={handleEditClick}
+                onView={handleViewClick}
+                onPageChange={handlePageChange}
+                currentPage={currentPage}
+              />
+            </div>
+          )}
+        </div>
+      </div>
 
       {/* Book Form Modal */}
       {isFormOpen && (
