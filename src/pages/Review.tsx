@@ -12,7 +12,6 @@ import {
   BookOutlined,
   TagOutlined,
   ClockCircleOutlined,
-  ReadOutlined,
   MessageOutlined,
   LoadingOutlined
 } from "@ant-design/icons";

@@ -1,6 +1,6 @@
 // Category.tsx - Improved layout component
 import { useQuery } from "@tanstack/react-query";
-import { useState, useEffect } from "react";
+import { useState} from "react";
 import { useAuth } from "../utils/AuthProvider";
 import axios from "../utils/AxiosInstance";
 import CategoryList from "../components/CategoryList";
