@@ -35,12 +35,12 @@ export const Register = () => {
   return (
     <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-blue-500 via-purple-500 to-pink-500 px-4 py-12">
       <div className="absolute inset-0 bg-pattern opacity-10"></div>
-      
+
       {/* Decorative Circles */}
       <div className="absolute top-10 left-10 w-64 h-64 bg-blue-400 rounded-full mix-blend-multiply filter blur-3xl opacity-20 animate-blob"></div>
       <div className="absolute top-0 right-20 w-72 h-72 bg-purple-400 rounded-full mix-blend-multiply filter blur-3xl opacity-20 animate-blob animation-delay-2000"></div>
       <div className="absolute bottom-20 left-20 w-80 h-80 bg-pink-400 rounded-full mix-blend-multiply filter blur-3xl opacity-20 animate-blob animation-delay-4000"></div>
-      
+
       <div className="max-w-md w-full bg-white bg-opacity-90 backdrop-blur-sm p-8 rounded-xl shadow-xl border border-white border-opacity-20 relative z-10">
         <div className="text-center mb-8">
           <h2 className="text-3xl font-bold text-gray-800 mb-2">
@@ -143,7 +143,7 @@ export const Register = () => {
             </a>
           </p>
         </div>
-        
+
         <div className="mt-6 border-t border-gray-200 pt-4">
           <p className="text-xs text-center text-gray-600">
             By creating an account, you agree to our Terms and Privacy Policy
